@@ -1,21 +1,49 @@
+
 import { Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "./theme-provider";
+import { useEffect } from "react";
 
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
-  const isDark = theme === "dark";
+
+  // Apply a darker transition effect with longer duration for smoother transition
+  useEffect(() => {
+    document.documentElement.style.transition = 'background-color 0.9s ease, color 0.9s ease';
+    
+    // Force reflow for better style application
+    if (theme === 'dark') {
+      document.body.classList.add('bg-[#050505]');
+    } else {
+      document.body.classList.remove('bg-[#050505]');
+    }
+    
+    return () => {
+      document.documentElement.style.transition = '';
+    };
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(theme === "light" ? "dark" : "light");
+  };
 
   return (
     <Button
-      variant="ghost"
+      variant="outline"
       size="icon"
-      onClick={() => setTheme(isDark ? "light" : "dark")}
+      onClick={toggleTheme}
       aria-label="Toggle theme"
-      className="h-9 w-9 rounded-full hover:bg-secondary transition-all"
+      className={`h-9 w-9 rounded-full transition-all duration-300 ${
+        theme === 'dark' 
+          ? 'bg-black border-gray-900 hover:bg-gray-900' 
+          : 'bg-background border-primary/20 hover:bg-secondary/80'
+      }`}
     >
-      <Sun className="h-[18px] w-[18px] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-      <Moon className="absolute h-[18px] w-[18px] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+      {theme === "light" ? (
+        <Moon className="h-5 w-5" />
+      ) : (
+        <Sun className="h-5 w-5 text-yellow-300" />
+      )}
       <span className="sr-only">Toggle theme</span>
     </Button>
   );

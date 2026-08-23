@@ -1,7 +1,8 @@
+
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Star, Clock, Check, ArrowUpRight } from 'lucide-react';
+import { Star, Clock, Check } from 'lucide-react';
 import { Service } from '@/utils/types';
 import { Badge } from '@/components/ui/badge';
 import { Image } from '@/components/ui/image';
@@ -13,69 +14,71 @@ interface ServiceCardProps {
 
 const ServiceCard = ({ service }: ServiceCardProps) => {
   const { id, name, description, price, image, rating, providerId, providerName, features, category } = service;
-
+  
+  // Get appropriate image based on service category
   const serviceImage = image && image.startsWith('http') ? image : getServiceImage(category);
-
+  
   return (
-    <Card className="service-card overflow-hidden h-full flex flex-col bg-card border-border/60 rounded-lg group">
-      <div className="relative h-52 overflow-hidden bg-secondary">
-        <Image
-          src={serviceImage}
-          alt={name}
-          className="w-full h-full transition-transform duration-700 group-hover:scale-105"
+    <Card className="service-card overflow-hidden h-full flex flex-col hover:shadow-lg transition-all duration-300 dark:bg-gray-800/90">
+      <div className="relative h-48 overflow-hidden">
+        <Image 
+          src={serviceImage} 
+          alt={name} 
+          className="w-full h-full"
           fallbackCategory={category}
           aspectRatio="wide"
           withAspectRatio
         />
+        {/* Add a small badge for top rated services */}
         {rating >= 4.7 && (
-          <div className="absolute top-3 left-3 bg-background/95 backdrop-blur text-foreground text-[10px] uppercase tracking-widest px-2.5 py-1 rounded-full font-medium">
-            Editor's pick
+          <div className="absolute top-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded-full dark:bg-white/90 dark:text-black">
+            Top Rated
           </div>
         )}
-        <div className="absolute top-3 right-3 bg-background/95 backdrop-blur px-2.5 py-1 rounded-full flex items-center gap-1">
-          <Star size={11} className="text-primary" fill="currentColor" />
-          <span className="text-xs font-medium tabular-nums">{rating.toFixed(1)}</span>
-        </div>
       </div>
-
-      <CardHeader className="p-5 pb-3">
-        <h3 className="font-display text-xl font-medium leading-tight mb-1.5 group-hover:text-primary transition-colors">
-          {name}
-        </h3>
-        <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">{description}</p>
+      <CardHeader className="p-4">
+        <div className="flex justify-between items-start">
+          <h3 className="text-lg font-semibold">{name}</h3>
+          <div className="flex items-center bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-sm">
+            <Star size={14} className="text-yellow-500 mr-1" fill="currentColor" />
+            <span>{rating.toFixed(1)}</span>
+          </div>
+        </div>
+        <p className="text-sm text-muted-foreground line-clamp-2">{description}</p>
       </CardHeader>
-
-      <CardContent className="px-5 pt-0 pb-3 flex-grow">
+      <CardContent className="p-4 pt-0 flex-grow">
         {features && features.length > 0 && (
-          <div className="flex flex-wrap gap-1.5 mb-3">
-            {features.slice(0, 3).map((feature, i) => (
-              <Badge key={i} variant="outline" className="text-[11px] font-normal bg-secondary/50 border-border/60">
-                <Check size={9} className="text-primary mr-1" />
-                {feature}
-              </Badge>
-            ))}
+          <div className="mb-3">
+            <h4 className="text-sm font-medium mb-2">Features:</h4>
+            <div className="flex flex-wrap gap-1.5">
+              {features.slice(0, 4).map((feature, index) => (
+                <Badge key={index} variant="outline" className="text-xs bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
+                  <Check size={10} className="text-green-500 mr-1 flex-shrink-0" />
+                  {feature}
+                </Badge>
+              ))}
+              {features.length > 4 && (
+                <Badge variant="outline" className="text-xs bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
+                  +{features.length - 4} more
+                </Badge>
+              )}
+            </div>
           </div>
         )}
-        <div className="flex items-center justify-between text-xs text-muted-foreground">
-          <span className="flex items-center gap-1.5">
-            <Clock size={12} /> {service.duration || '60–90 min'}
-          </span>
-          <Link to={`/provider/${providerId}`} className="link-reveal hover:text-foreground">
+        <div className="flex justify-between items-center mt-2 text-sm text-muted-foreground">
+          <div className="flex items-center">
+            <Clock size={14} className="mr-1" />
+            <span>{service.duration || '60-90 min'}</span>
+          </div>
+          <Link to={`/provider/${providerId}`} className="hover:underline">
             {providerName}
           </Link>
         </div>
       </CardContent>
-
-      <CardFooter className="p-5 pt-3 flex justify-between items-center border-t border-border/60">
-        <div>
-          <p className="text-[10px] uppercase tracking-widest text-muted-foreground mb-0.5">From</p>
-          <p className="font-display text-2xl font-medium tabular-nums">₹{price}</p>
-        </div>
+      <CardFooter className="p-4 pt-0 flex justify-between items-center border-t mt-auto dark:border-gray-700">
+        <div className="font-semibold">₹{price}</div>
         <Link to={`/services/${id}`}>
-          <Button className="rounded-full bg-foreground text-background hover:bg-foreground/90 group/btn">
-            Book
-            <ArrowUpRight size={14} className="ml-1 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
-          </Button>
+          <Button className="btn-brand">Book Now</Button>
         </Link>
       </CardFooter>
     </Card>

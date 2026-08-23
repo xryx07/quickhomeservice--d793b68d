@@ -1,165 +1,206 @@
+
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { PaintBucket, Palette, PaintRoller, Check, Wrench, Monitor, Cpu } from 'lucide-react';
+
 import Navigation from '@/components/Navigation';
 import Hero from '@/components/Hero';
 import Footer from '@/components/Footer';
+import { Service, Category } from '@/utils/types';
 import { allCategories } from '@/data/services';
+import { paintingServices } from '@/data/services/painting';
 import ChatBot from '@/components/chatbot';
-import { useLanguage } from '@/contexts/LanguageContext';
-import { ArrowUpRight, ShieldCheck, Clock3, Wallet, Languages } from 'lucide-react';
-import { lazy, Suspense } from 'react';
-
-const AmbientShapes = lazy(() => import('@/components/three/AmbientShapes'));
 
 const Index = () => {
-  const { t } = useLanguage();
-
   return (
-    <div className="min-h-screen flex flex-col bg-background">
+    <div className="min-h-screen flex flex-col">
       <Navigation />
       <Hero />
-
+      
       <main>
-        {/* Catalogue — editorial grid with hairline borders */}
-        <section className="py-24 lg:py-32 border-b border-border">
-          <div className="container mx-auto px-6 lg:px-12">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-16">
-              <div className="lg:col-span-5">
-                <p className="eyebrow mb-6">{t('cat.eyebrow')}</p>
-                <h2 className="display-lg">
-                  {t('cat.title.a')}
-                  <span className="display-italic text-primary">{t('cat.title.b')}</span>
-                </h2>
-              </div>
-              <div className="lg:col-span-6 lg:col-start-7 flex items-end">
-                <p className="text-lg text-muted-foreground leading-relaxed">{t('cat.lede')}</p>
-              </div>
-            </div>
-
-            {/* Category list — magazine table style */}
-            <div className="border-t border-border">
-              {allCategories.map((category, idx) => (
-                <Link
-                  key={category.id}
-                  to={`/services?category=${category.name.toLowerCase()}`}
-                  className="group grid grid-cols-12 items-center py-6 lg:py-8 border-b border-border hover:bg-secondary/30 transition-colors px-2 lg:px-4 -mx-2 lg:-mx-4"
-                >
-                  <span className="col-span-1 font-display text-sm text-muted-foreground tabular-nums">
-                    {String(idx + 1).padStart(2, '0')}
-                  </span>
-                  <span className="col-span-2 lg:col-span-1 text-3xl">{category.icon}</span>
-                  <span className="col-span-6 lg:col-span-7 font-display text-2xl md:text-3xl font-medium group-hover:text-primary transition-colors">
-                    {category.name}
-                  </span>
-                  <span className="col-span-2 text-sm text-muted-foreground tabular-nums">
-                    {category.services} {t('cat.count')}
-                  </span>
-                  <span className="col-span-1 flex justify-end">
-                    <ArrowUpRight
-                      size={20}
-                      className="text-muted-foreground transition-all group-hover:text-primary group-hover:rotate-45"
-                    />
-                  </span>
+        {/* Browse Categories */}
+        <section className="py-16 bg-white">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold text-center mb-12">Browse Categories</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-6">
+              {allCategories.map((category) => (
+                <Link key={category.id} to={`/services?category=${category.name.toLowerCase()}`}>
+                  <Card className="h-full transition-all hover:shadow-md hover:-translate-y-1 text-center">
+                    <CardContent className="p-6 flex flex-col items-center justify-center">
+                      <div className="text-4xl mb-3">{category.icon}</div>
+                      <h3 className="font-semibold text-lg mb-1">{category.name}</h3>
+                      <p className="text-sm text-muted-foreground">{category.services} services</p>
+                    </CardContent>
+                  </Card>
                 </Link>
               ))}
             </div>
           </div>
         </section>
-
-        {/* The Method — three numbered columns */}
-        <section className="py-24 lg:py-32 bg-secondary/30 border-b border-border">
-          <div className="container mx-auto px-6 lg:px-12">
-            <div className="text-center mb-20">
-              <p className="eyebrow mb-6">{t('how.eyebrow')}</p>
-              <h2 className="display-lg max-w-2xl mx-auto">{t('how.title')}</h2>
+        
+        {/* We perform works of varying levels of complexity */}
+        <section className="py-16 bg-gray-50">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold mb-4">We perform works of varying levels of complexity</h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                From simple fixes to complex system overhauls, our team has the expertise to handle any repair job.
+              </p>
             </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-20">
-              <Step n="01" title={t('how.s1.t')} desc={t('how.s1.d')} />
-              <Step n="02" title={t('how.s2.t')} desc={t('how.s2.d')} />
-              <Step n="03" title={t('how.s3.t')} desc={t('how.s3.d')} />
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
+              <Card className="shadow-sm">
+                <CardContent className="p-6">
+                  <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center text-black mb-4">
+                    <Monitor size={24} />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2">Computer repair services</h3>
+                  <p className="text-gray-600">
+                    We fix all types of computer issues from hardware replacements to software troubleshooting.
+                  </p>
+                  <ul className="mt-4 space-y-2">
+                    <li className="flex items-center text-sm text-gray-600">
+                      <Check size={16} className="text-green-500 mr-2" />
+                      Hardware diagnostics
+                    </li>
+                    <li className="flex items-center text-sm text-gray-600">
+                      <Check size={16} className="text-green-500 mr-2" />
+                      Software installations
+                    </li>
+                    <li className="flex items-center text-sm text-gray-600">
+                      <Check size={16} className="text-green-500 mr-2" />
+                      Battery replacement
+                    </li>
+                  </ul>
+                  <Button variant="outline" className="mt-6 w-full">Get Started</Button>
+                </CardContent>
+              </Card>
+              
+              <Card className="shadow-sm">
+                <CardContent className="p-6">
+                  <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center text-black mb-4">
+                    <Cpu size={24} />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2">Electronics repair</h3>
+                  <p className="text-gray-600">
+                    Expert repair services for phones, tablets, TVs, and other electronic devices.
+                  </p>
+                  <ul className="mt-4 space-y-2">
+                    <li className="flex items-center text-sm text-gray-600">
+                      <Check size={16} className="text-green-500 mr-2" />
+                      Screen replacement
+                    </li>
+                    <li className="flex items-center text-sm text-gray-600">
+                      <Check size={16} className="text-green-500 mr-2" />
+                      Data recovery
+                    </li>
+                    <li className="flex items-center text-sm text-gray-600">
+                      <Check size={16} className="text-green-500 mr-2" />
+                      Component-level repair
+                    </li>
+                  </ul>
+                  <Button variant="outline" className="mt-6 w-full">Get Started</Button>
+                </CardContent>
+              </Card>
+              
+              <Card className="shadow-sm">
+                <CardContent className="p-6">
+                  <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center text-black mb-4">
+                    <Wrench size={24} />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2">Appliance repair</h3>
+                  <p className="text-gray-600">
+                    Reliable repair services for all major household appliances and systems.
+                  </p>
+                  <ul className="mt-4 space-y-2">
+                    <li className="flex items-center text-sm text-gray-600">
+                      <Check size={16} className="text-green-500 mr-2" />
+                      Refrigerator repair
+                    </li>
+                    <li className="flex items-center text-sm text-gray-600">
+                      <Check size={16} className="text-green-500 mr-2" />
+                      Washer & dryer service
+                    </li>
+                    <li className="flex items-center text-sm text-gray-600">
+                      <Check size={16} className="text-green-500 mr-2" />
+                      HVAC maintenance
+                    </li>
+                  </ul>
+                  <Button variant="outline" className="mt-6 w-full">Get Started</Button>
+                </CardContent>
+              </Card>
+            </div>
+            
+            <div className="text-center">
+              <Link to="/services">
+                <Button className="bg-black hover:bg-gray-800 text-white">View All Services</Button>
+              </Link>
             </div>
           </div>
         </section>
-
-        {/* What sets us apart */}
-        <section className="py-24 lg:py-32 border-b border-border relative overflow-hidden">
-          <Suspense fallback={null}>
-            <AmbientShapes />
-          </Suspense>
-          <div className="container mx-auto px-6 lg:px-12 relative z-10">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-16">
-              <div className="lg:col-span-6">
-                <p className="eyebrow mb-6">{t('why.eyebrow')}</p>
-                <h2 className="display-lg">
-                  {t('why.title.a')}
-                  <span className="display-italic text-primary">{t('why.title.b')}</span>
-                </h2>
+        
+        {/* How It Works */}
+        <section className="py-16 bg-white">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="flex flex-col items-center text-center">
+                <div className="w-16 h-16 rounded-full bg-black text-white flex items-center justify-center mb-4">
+                  <span className="text-2xl font-bold">1</span>
+                </div>
+                <h3 className="text-xl font-semibold mb-2">Request Service</h3>
+                <p className="text-muted-foreground">
+                  Search for the service you need and submit a request through our platform.
+                </p>
               </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-border">
-              <Feature icon={<Wallet size={22} />} title={t('why.f1.t')} desc={t('why.f1.d')} />
-              <Feature icon={<Clock3 size={22} />} title={t('why.f2.t')} desc={t('why.f2.d')} />
-              <Feature icon={<ShieldCheck size={22} />} title={t('why.f3.t')} desc={t('why.f3.d')} />
-              <Feature icon={<Languages size={22} />} title={t('why.f4.t')} desc={t('why.f4.d')} />
+              
+              <div className="flex flex-col items-center text-center">
+                <div className="w-16 h-16 rounded-full bg-black text-white flex items-center justify-center mb-4">
+                  <span className="text-2xl font-bold">2</span>
+                </div>
+                <h3 className="text-xl font-semibold mb-2">Get a Quote</h3>
+                <p className="text-muted-foreground">
+                  Receive a transparent quote with no hidden fees before any work begins.
+                </p>
+              </div>
+              
+              <div className="flex flex-col items-center text-center">
+                <div className="w-16 h-16 rounded-full bg-black text-white flex items-center justify-center mb-4">
+                  <span className="text-2xl font-bold">3</span>
+                </div>
+                <h3 className="text-xl font-semibold mb-2">Problem Solved</h3>
+                <p className="text-muted-foreground">
+                  Our qualified technician arrives at your location and completes the repair.
+                </p>
+              </div>
             </div>
           </div>
         </section>
-
-        {/* Provider CTA — inverted */}
-        <section className="py-24 lg:py-32 bg-foreground text-background relative overflow-hidden">
-          <div className="container mx-auto px-6 lg:px-12 relative z-10">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-end">
-              <div className="lg:col-span-8">
-                <p className="eyebrow mb-6 text-background/60">{t('cta.eyebrow')}</p>
-                <h2 className="display-lg text-background">
-                  {t('cta.title.a')}
-                  <span className="display-italic text-primary">{t('cta.title.b')}</span>
-                </h2>
-                <p className="mt-6 text-lg text-background/70 max-w-xl leading-relaxed">{t('cta.lede')}</p>
-              </div>
-              <div className="lg:col-span-4 lg:text-right">
-                <Link to="/become-provider">
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="rounded-full border-background/30 bg-transparent text-background hover:bg-background hover:text-foreground h-14 px-8 text-base"
-                  >
-                    {t('cta.btn')}
-                    <ArrowUpRight size={18} className="ml-2" />
-                  </Button>
-                </Link>
-              </div>
+        
+        {/* Join as Provider CTA */}
+        <section className="py-16 bg-black text-white">
+          <div className="container mx-auto px-4">
+            <div className="max-w-3xl mx-auto text-center">
+              <h2 className="text-3xl font-bold mb-4">Join Our Network of Service Providers</h2>
+              <p className="text-xl mb-8">
+                Are you a qualified technician or service provider? Partner with us to grow your business and reach more customers.
+              </p>
+              <Link to="/become-provider">
+                <Button variant="outline" className="bg-transparent border-2 border-white hover:bg-white hover:text-black text-lg px-6 py-2 font-medium">
+                  Become a Provider
+                </Button>
+              </Link>
             </div>
-          </div>
-          {/* Decorative oversized typographic flourish */}
-          <div className="absolute -right-10 -bottom-10 font-display italic text-[20rem] leading-none text-background/[0.03] pointer-events-none select-none hidden lg:block">
-            &
           </div>
         </section>
       </main>
-
+      
       <ChatBot />
       <Footer />
     </div>
   );
 };
-
-const Step = ({ n, title, desc }: { n: string; title: string; desc: string }) => (
-  <div>
-    <div className="marker-num mb-6">{n}</div>
-    <h3 className="font-display text-2xl font-medium mb-3">{title}</h3>
-    <p className="text-muted-foreground leading-relaxed">{desc}</p>
-  </div>
-);
-
-const Feature = ({ icon, title, desc }: { icon: React.ReactNode; title: string; desc: string }) => (
-  <div className="bg-background p-8 lg:p-12 hover:bg-secondary/30 transition-colors group">
-    <div className="text-primary mb-6 transition-transform group-hover:-translate-y-1">{icon}</div>
-    <h3 className="font-display text-2xl font-medium mb-3">{title}</h3>
-    <p className="text-muted-foreground leading-relaxed">{desc}</p>
-  </div>
-);
 
 export default Index;

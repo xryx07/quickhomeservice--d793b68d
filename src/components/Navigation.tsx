@@ -1,13 +1,11 @@
+
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Menu, X, ArrowUpRight } from 'lucide-react';
+import { Menu, Search, User, LogIn, Home, Briefcase, Phone } from 'lucide-react';
 import { AuthModal } from './auth';
 import { useToast } from '@/components/ui/use-toast';
 import { ThemeToggle } from './theme-toggle';
-import { LanguageToggle } from './LanguageToggle';
-import { useAuth } from '@/contexts/AuthContext';
-import { useLanguage } from '@/contexts/LanguageContext';
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,110 +13,152 @@ const Navigation = () => {
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
   const { toast } = useToast();
   const navigate = useNavigate();
-  const { isAuthenticated, profile, userRole, signOut } = useAuth();
-  const { t } = useLanguage();
-
-  const openLogin = () => { setAuthMode('login'); setIsAuthModalOpen(true); };
-  const openSignup = () => { setAuthMode('register'); setIsAuthModalOpen(true); };
-
-  const handleLogout = async () => {
-    await signOut();
-    toast({ title: t('nav.logout'), description: '' });
+  
+  // Mock authentication state - to be replaced with actual auth
+  const isAuthenticated = false;
+  const userRole = null;
+  
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  
+  const openLoginModal = () => {
+    setAuthMode('login');
+    setIsAuthModalOpen(true);
+  };
+  
+  const openRegisterModal = () => {
+    setAuthMode('register');
+    setIsAuthModalOpen(true);
+  };
+  
+  const handleLogout = () => {
+    // To be replaced with actual logout logic
+    toast({
+      title: "Logged out",
+      description: "You have been logged out successfully.",
+    });
     navigate('/');
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border">
-      <div className="container mx-auto px-6 lg:px-12">
-        <div className="flex items-center justify-between h-16 lg:h-20">
-          {/* Logo — wordmark with editorial slash */}
-          <Link to="/" className="flex items-baseline gap-2 group">
-            <span className="font-display text-2xl lg:text-[1.6rem] font-medium tracking-tight">Quick</span>
-            <span className="font-display text-2xl lg:text-[1.6rem] font-medium tracking-tight display-italic text-primary">home</span>
-            <span className="hidden sm:inline text-[10px] uppercase tracking-[0.2em] text-muted-foreground ml-1 self-center">est. 2025</span>
-          </Link>
-
-          {/* Center nav */}
-          <nav className="hidden lg:flex items-center gap-10 absolute left-1/2 -translate-x-1/2">
-            <Link to="/" className="nav-link text-sm uppercase tracking-widest font-medium">{t('nav.home')}</Link>
-            <Link to="/services" className="nav-link text-sm uppercase tracking-widest font-medium">{t('nav.services')}</Link>
-            <Link to="/become-provider" className="nav-link text-sm uppercase tracking-widest font-medium">{t('nav.provider')}</Link>
-            <Link to="/contact" className="nav-link text-sm uppercase tracking-widest font-medium">{t('nav.contact')}</Link>
-          </nav>
-
-          {/* Right cluster */}
-          <div className="hidden lg:flex items-center gap-2">
-            <LanguageToggle />
+    <nav className="sticky top-0 z-50 bg-background border-b border-border shadow-sm">
+      <div className="container mx-auto px-4 py-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center">
+            <Link to="/" className="flex items-center">
+              <h1 className="text-2xl font-bold">QuickHomeService</h1>
+            </Link>
+          </div>
+          
+          <div className="hidden md:flex items-center space-x-8">
+            <Link to="/" className="nav-link font-medium">
+              <span className="flex items-center gap-1"><Home size={18} /> Home</span>
+            </Link>
+            <Link to="/services" className="nav-link font-medium">
+              <span className="flex items-center gap-1"><Briefcase size={18} /> Services</span>
+            </Link>
+            <Link to="/become-provider" className="nav-link font-medium">
+              <span className="flex items-center gap-1"><User size={18} /> Become a Provider</span>
+            </Link>
+            <Link to="/contact" className="nav-link font-medium">
+              <span className="flex items-center gap-1"><Phone size={18} /> Contact</span>
+            </Link>
+          </div>
+          
+          <div className="hidden md:flex items-center space-x-4">
             <ThemeToggle />
-            <div className="w-px h-6 bg-border mx-2" />
+            
             {isAuthenticated ? (
-              <div className="relative group">
-                <Button variant="ghost" className="text-sm rounded-full">
-                  {profile?.full_name?.split(' ')[0] || t('nav.account')}
-                </Button>
-                <div className="absolute right-0 top-full pt-2 w-56 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all">
-                  <div className="bg-popover border border-border rounded-lg shadow-[var(--shadow-lift)] py-2">
-                    <Link to={userRole === 'provider' ? '/provider/profile' : '/profile'} className="block px-4 py-2.5 text-sm hover:bg-secondary">
-                      {t('nav.profile')}
-                    </Link>
-                    {userRole === 'admin' && (
-                      <Link to="/admin" className="block px-4 py-2.5 text-sm hover:bg-secondary">{t('nav.admin')}</Link>
-                    )}
-                    {userRole === 'provider' && (
-                      <Link to="/provider/profile" className="block px-4 py-2.5 text-sm hover:bg-secondary">{t('nav.providerDash')}</Link>
-                    )}
-                    <div className="border-t border-border my-1" />
-                    <button onClick={handleLogout} className="w-full text-left px-4 py-2.5 text-sm hover:bg-secondary">{t('nav.logout')}</button>
+              <>
+                <div className="relative group">
+                  <Button variant="ghost" className="flex items-center gap-2">
+                    <User size={18} /> My Account
+                  </Button>
+                  <div className="absolute right-0 mt-2 w-48 bg-background rounded-md shadow-lg invisible group-hover:visible transition-all border border-border">
+                    <div className="py-1">
+                      <Link to={userRole === 'provider' ? '/provider/profile' : '/profile'} className="block px-4 py-2 hover:bg-muted">
+                        Profile
+                      </Link>
+                      {userRole === 'admin' && (
+                        <Link to="/admin" className="block px-4 py-2 hover:bg-muted">
+                          Admin Dashboard
+                        </Link>
+                      )}
+                      {userRole === 'provider' && (
+                        <Link to="/provider/dashboard" className="block px-4 py-2 hover:bg-muted">
+                          Provider Dashboard
+                        </Link>
+                      )}
+                      <button onClick={handleLogout} className="block w-full text-left px-4 py-2 hover:bg-muted">
+                        Logout
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </>
             ) : (
               <>
-                <Button variant="ghost" onClick={openLogin} className="text-sm rounded-full">{t('nav.login')}</Button>
-                <Button onClick={openSignup} className="rounded-full bg-foreground text-background hover:bg-foreground/90 text-sm group">
-                  {t('nav.signup')}
-                  <ArrowUpRight size={15} className="ml-1 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <Button variant="ghost" onClick={openLoginModal} className="flex items-center gap-2">
+                  <LogIn size={18} /> Login
                 </Button>
+                <Button onClick={openRegisterModal} className="btn-brand">Sign Up</Button>
               </>
             )}
           </div>
-
-          {/* Mobile */}
-          <div className="lg:hidden flex items-center gap-1">
-            <LanguageToggle />
+          
+          <div className="md:hidden flex items-center space-x-2">
             <ThemeToggle />
-            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-2 ml-1" aria-label="Menu">
-              {isMenuOpen ? <X size={22} /> : <Menu size={22} />}
+            <button onClick={toggleMenu}>
+              <Menu size={24} />
             </button>
           </div>
         </div>
-
+        
+        {/* Mobile menu */}
         {isMenuOpen && (
-          <div className="lg:hidden py-6 border-t border-border animate-fade-in">
-            <nav className="flex flex-col gap-1">
-              <Link to="/" onClick={() => setIsMenuOpen(false)} className="py-3 font-display text-2xl">{t('nav.home')}</Link>
-              <Link to="/services" onClick={() => setIsMenuOpen(false)} className="py-3 font-display text-2xl">{t('nav.services')}</Link>
-              <Link to="/become-provider" onClick={() => setIsMenuOpen(false)} className="py-3 font-display text-2xl">{t('nav.provider')}</Link>
-              <Link to="/contact" onClick={() => setIsMenuOpen(false)} className="py-3 font-display text-2xl">{t('nav.contact')}</Link>
-              <div className="h-px bg-border my-4" />
+          <div className="md:hidden mt-4 pb-4 animate-fade-in">
+            <div className="flex flex-col space-y-4">
+              <Link to="/" className="nav-link font-medium py-2">Home</Link>
+              <Link to="/services" className="nav-link font-medium py-2">Services</Link>
+              <Link to="/become-provider" className="nav-link font-medium py-2">Become a Provider</Link>
+              <Link to="/contact" className="nav-link font-medium py-2">Contact</Link>
+              
               {isAuthenticated ? (
                 <>
-                  <Link to={userRole === 'provider' ? '/provider/profile' : '/profile'} onClick={() => setIsMenuOpen(false)} className="py-3">{t('nav.profile')}</Link>
-                  <button onClick={handleLogout} className="text-left py-3">{t('nav.logout')}</button>
+                  <Link to={userRole === 'provider' ? '/provider/profile' : '/profile'} className="nav-link font-medium py-2">
+                    Profile
+                  </Link>
+                  {userRole === 'admin' && (
+                    <Link to="/admin" className="nav-link font-medium py-2">
+                      Admin Dashboard
+                    </Link>
+                  )}
+                  {userRole === 'provider' && (
+                    <Link to="/provider/dashboard" className="nav-link font-medium py-2">
+                      Provider Dashboard
+                    </Link>
+                  )}
+                  <button onClick={handleLogout} className="text-left py-2 nav-link font-medium">
+                    Logout
+                  </button>
                 </>
               ) : (
-                <div className="flex gap-3 pt-2">
-                  <Button variant="outline" onClick={openLogin} className="flex-1 rounded-full">{t('nav.login')}</Button>
-                  <Button onClick={openSignup} className="flex-1 rounded-full bg-foreground text-background">{t('nav.signup')}</Button>
+                <div className="flex space-x-4 pt-2">
+                  <Button variant="outline" onClick={openLoginModal} className="w-full">Login</Button>
+                  <Button onClick={openRegisterModal} className="w-full btn-brand">Sign Up</Button>
                 </div>
               )}
-            </nav>
+            </div>
           </div>
         )}
       </div>
-
-      <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} mode={authMode} setMode={setAuthMode} />
-    </header>
+      
+      <AuthModal 
+        isOpen={isAuthModalOpen} 
+        onClose={() => setIsAuthModalOpen(false)} 
+        mode={authMode}
+        setMode={setAuthMode}
+      />
+    </nav>
   );
 };
 

@@ -20,27 +20,22 @@ export const ContactForm: React.FC<ContactFormProps> = ({
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-1">
-          <Label htmlFor="phone">फ़ोन नंबर / Phone (+91)</Label>
+          <Label htmlFor="phone">Phone Number</Label>
           <Input
             id="phone"
             type="tel"
-            placeholder="10 अंकों का मोबाइल नंबर"
+            placeholder="Your phone number"
             value={phone}
-            onChange={(e) => {
-              const val = e.target.value.replace(/\D/g, '').slice(0, 10);
-              setPhone(val);
-            }}
-            maxLength={10}
+            onChange={(e) => setPhone(e.target.value)}
           />
-          <p className="text-xs text-muted-foreground">उदाहरण: 9876543210</p>
         </div>
         
         <div className="space-y-1">
-          <Label htmlFor="email">ईमेल / Email</Label>
+          <Label htmlFor="email">Email</Label>
           <Input
             id="email"
             type="email"
-            placeholder="अपना ईमेल दर्ज करें"
+            placeholder="Your email address"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
@@ -48,10 +43,10 @@ export const ContactForm: React.FC<ContactFormProps> = ({
       </div>
       
       <div className="space-y-1">
-        <Label htmlFor="note">विशेष निर्देश / Special Instructions (वैकल्पिक)</Label>
+        <Label htmlFor="note">Special Instructions (Optional)</Label>
         <Textarea
           id="note"
-          placeholder="कोई विशेष अनुरोध या निर्देश..."
+          placeholder="Any special requirements or notes for the service provider"
           value={note}
           onChange={(e) => setNote(e.target.value)}
           className="resize-none"
