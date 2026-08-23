@@ -1,4 +1,3 @@
-
 import { createContext, useContext, useEffect, useState } from "react";
 
 type Theme = "dark" | "light" | "system";
@@ -11,11 +10,13 @@ type ThemeProviderProps = {
 
 type ThemeProviderState = {
   theme: Theme;
+  resolvedTheme: "dark" | "light";
   setTheme: (theme: Theme) => void;
 };
 
 const initialState: ThemeProviderState = {
   theme: "system",
+  resolvedTheme: "light",
   setTheme: () => null,
 };
 
@@ -30,41 +31,38 @@ export function ThemeProvider({
   const [theme, setTheme] = useState<Theme>(
     () => (localStorage.getItem(storageKey) as Theme) || defaultTheme
   );
+  const [resolvedTheme, setResolvedTheme] = useState<"dark" | "light">("light");
 
   useEffect(() => {
     const root = window.document.documentElement;
-    
-    root.classList.remove("light", "dark");
-    
-    if (theme === "system") {
-      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
-        .matches
-        ? "dark"
-        : "light";
-      
-      root.classList.add(systemTheme);
-      root.style.colorScheme = systemTheme;
-      return;
-    }
-    
-    root.classList.add(theme);
-    root.style.colorScheme = theme;
-    
-    // Force update the HTML attribute for immediate styling
-    document.documentElement.setAttribute('data-theme', theme);
-    
-    // Apply deeper dark mode if needed
-    if (theme === 'dark') {
-      document.body.style.backgroundColor = '#050505'; // Even darker background
-      document.body.classList.add('dark-mode-active');
-    } else {
-      document.body.style.backgroundColor = '';
-      document.body.classList.remove('dark-mode-active');
-    }
+
+    const apply = () => {
+      const next =
+        theme === "system"
+          ? window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light"
+          : theme;
+
+      root.classList.remove("light", "dark");
+      root.classList.add(next);
+      root.style.colorScheme = next;
+      root.setAttribute("data-theme", next);
+      setResolvedTheme(next);
+    };
+
+    apply();
+
+    if (theme !== "system") return;
+
+    const media = window.matchMedia("(prefers-color-scheme: dark)");
+    media.addEventListener("change", apply);
+    return () => media.removeEventListener("change", apply);
   }, [theme]);
 
   const value = {
     theme,
+    resolvedTheme,
     setTheme: (theme: Theme) => {
       localStorage.setItem(storageKey, theme);
       setTheme(theme);
@@ -80,9 +78,9 @@ export function ThemeProvider({
 
 export const useTheme = () => {
   const context = useContext(ThemeProviderContext);
-  
+
   if (context === undefined)
     throw new Error("useTheme must be used within a ThemeProvider");
-  
+
   return context;
 };
