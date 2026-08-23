@@ -1,103 +1,44 @@
+/* Dark mode: token-driven. Only maps legacy hardcoded utilities onto theme tokens. */
 
-/* Improve dark mode text visibility */
-.dark .text-muted-foreground {
-  @apply text-opacity-90;
+.dark .bg-white {
+  background-color: hsl(var(--card));
 }
 
-.dark .service-card {
-  border: 1px solid theme('colors.gray.800');
-  @apply hover:border-gray-700;
-}
-
-/* Direct color assignments instead of circular @apply */
-.dark .bg-gray-50 {
-  background-color: theme('colors.gray.950');
-}
-
+.dark .bg-gray-50,
 .dark .bg-gray-100 {
-  background-color: theme('colors.gray.900');
+  background-color: hsl(var(--secondary));
 }
 
-.dark .text-gray-600 {
-  color: theme('colors.gray.300');
-}
-
-/* Make sure service image container has proper contrast - avoid circular @apply */
-.dark .relative.rounded-lg.overflow-hidden {
-  border: 1px solid theme('colors.gray.800');
-  box-shadow: theme('boxShadow.md');
-}
-
-/* Improve feature list visibility in dark mode */
-.dark .flex.items-center.text-sm.text-gray-600 {
-  color: theme('colors.gray.300');
-}
-
-/* Fix visibility of feature list checkmarks */
-.dark .text-green-500 {
-  color: theme('colors.green.400');
-  opacity: 0.9;
-}
-
-/* Fix visibility of service features in cards */
-.dark .text-sm.text-gray-600 {
-  color: theme('colors.gray.300');
-}
-
-/* Improve visibility of features list in service cards */
-.dark .flex.items-center.text-sm {
-  color: theme('colors.gray.300');
-}
-
-/* Enhanced background for dark mode - EVEN DARKER VERSION */
-.dark {
-  background-color: #050505; /* Darker than before */
-  color: #e0e0e0;
-}
-
-/* Darker card backgrounds */
-.dark .bg-background {
-  background-color: #050505; /* Darker than before */
-}
-
-.dark .bg-card {
-  background-color: #0a0a0a; /* Darker than before */
-}
-
-/* Improved contrast for borders */
-.dark .border {
-  border-color: #1a1a1a;
-}
-
-/* Better contrast for service cards in dark mode */
-.dark .card {
-  background-color: #0a0a0a;
-  border-color: #1a1a1a;
-}
-
-/* Additional dark mode enhancements */
-.dark .bg-gray-800 {
-  background-color: #080808; /* Darker background */
-}
-
+.dark .bg-gray-800,
 .dark .bg-gray-900 {
-  background-color: #050505; /* Even darker background */
+  background-color: hsl(var(--card));
 }
 
-/* Input fields in dark mode */
-.dark input, .dark textarea, .dark select {
-  background-color: #0c0c0c;
-  border-color: #252525;
+.dark .text-gray-500,
+.dark .text-gray-600,
+.dark .text-gray-700,
+.dark .text-gray-800,
+.dark .text-gray-900,
+.dark .text-black {
+  color: hsl(var(--foreground));
 }
 
-/* Button styling in dark mode */
-.dark .bg-primary {
-  background-color: #f0f0f0;
+.dark .text-muted-foreground {
+  color: hsl(var(--muted-foreground));
 }
 
-/* Dropdown and popup windows */
-.dark [role="dialog"],
-.dark [role="menu"] {
-  background-color: #0a0a0a;
-  border-color: #252525;
+.dark .border-gray-100,
+.dark .border-gray-200,
+.dark .border-gray-300 {
+  border-color: hsl(var(--border));
+}
+
+.dark .text-green-500 {
+  color: #4ade80;
+}
+
+.dark .service-card,
+.dark .card {
+  background-color: hsl(var(--card));
+  border-color: hsl(var(--border));
 }
