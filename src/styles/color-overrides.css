@@ -1,60 +1,58 @@
 
-@layer components {
-  /* Replace blue with black in How It Works section */
-  .w-16.h-16.rounded-full.bg-blue-600, 
-  .bg-blue-600.text-white.flex.items-center.justify-center {
-    background-color: #000000;
-  }
-  
-  /* Replace blue with black in Join Network section */
-  .bg-blue-600.text-white {
-    background-color: #000000;
-  }
-  
-  /* Replace other blue instances */
-  .bg-blue-100 {
-    background-color: #f8f8f8;
-  }
-  
-  .text-blue-600 {
-    color: #000000;
-  }
-  
-  .bg-blue-600 {
-    background-color: #000000;
-  }
-  
-  /* Button hover states */
-  .hover\:bg-blue-700:hover {
-    background-color: #333333 !important;
-  }
-  
-  /* Dark mode adjustments */
-  .dark .w-16.h-16.rounded-full.bg-blue-600 {
-    background-color: #333333;
-    border: 1px solid #444444;
-  }
+/* Replace blue with black in How It Works section */
+.w-16.h-16.rounded-full.bg-blue-600, 
+.bg-blue-600.text-white.flex.items-center.justify-center {
+  background-color: #000000;
+}
 
-  /* Enhanced contrast for text on colored backgrounds - avoid circular @apply */
-  .dark .bg-blue-600.text-white h2,
-  .dark .bg-blue-600.text-white p,
-  .dark .bg-blue-800.text-white h2,
-  .dark .bg-blue-800.text-white p {
-    color: white;
-    opacity: 0.95;
-    font-weight: 500; /* font-medium equivalent */
-  }
-  
-  /* Fix for feature cards in dark mode - avoid circular @apply */
-  .dark .bg-blue-100.flex.items-center.justify-center.text-blue-600 {
-    background-color: theme('colors.gray.800');
-    color: theme('colors.gray.300');
-  }
-  
-  /* Fix for "How it works" section numbers - avoid circular @apply */
-  .dark .bg-blue-600.text-white.flex.items-center.justify-center {
-    background-color: #333333;
-    color: white;
-    border: 1px solid #444444;
-  }
+/* Replace blue with black in Join Network section */
+.bg-blue-600.text-white {
+  background-color: #000000;
+}
+
+/* Replace other blue instances */
+.bg-blue-100 {
+  background-color: #f8f8f8;
+}
+
+.text-blue-600 {
+  color: #000000;
+}
+
+.bg-blue-600 {
+  background-color: #000000;
+}
+
+/* Button hover states */
+.hover\:bg-blue-700:hover {
+  background-color: #333333 !important;
+}
+
+/* Dark mode adjustments */
+.dark .w-16.h-16.rounded-full.bg-blue-600 {
+  background-color: #333333;
+  border: 1px solid #444444;
+}
+
+/* Enhanced contrast for text on colored backgrounds - avoid circular @apply */
+.dark .bg-blue-600.text-white h2,
+.dark .bg-blue-600.text-white p,
+.dark .bg-blue-800.text-white h2,
+.dark .bg-blue-800.text-white p {
+  color: white;
+  opacity: 0.95;
+  font-weight: 500; /* font-medium equivalent */
+}
+
+/* Fix for feature cards in dark mode - avoid circular @apply */
+.dark .bg-blue-100.flex.items-center.justify-center.text-blue-600 {
+  background-color: theme('colors.gray.800');
+  color: theme('colors.gray.300');
+}
+
+/* Fix for "How it works" section numbers - avoid circular @apply */
+.dark .bg-blue-600.text-white.flex.items-center.justify-center {
+  background-color: #333333;
+  color: white;
+  border: 1px solid #444444;
 }

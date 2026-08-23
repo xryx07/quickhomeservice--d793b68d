@@ -1,18 +1,16 @@
 
-@layer components {
-  .service-card {
-    @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
-  }
-  
-  .nav-link {
-    @apply transition-colors hover:text-brand-600;
-  }
-  
-  .btn-brand {
-    @apply bg-primary text-primary-foreground hover:bg-primary/90 transition-colors;
-  }
+.service-card {
+  @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+}
 
-  .glass-card {
-    @apply bg-background/80 backdrop-blur-sm border border-border shadow-sm;
-  }
+.nav-link {
+  @apply transition-colors hover:text-brand-600;
+}
+
+.btn-brand {
+  @apply bg-primary text-primary-foreground hover:bg-primary/90 transition-colors;
+}
+
+.glass-card {
+  @apply bg-background/80 backdrop-blur-sm border border-border shadow-sm;
 }
