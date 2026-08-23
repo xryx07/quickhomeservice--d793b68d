@@ -90,7 +90,7 @@ const ServicesList = ({
               </div>
               
               <div className="flex justify-between items-center mt-auto">
-                <div className="font-bold">${service.price.toFixed(0)}</div>
+                <div className="font-bold">₹{service.price.toLocaleString("en-IN")}</div>
                 <Button variant="outline" size="sm">View Details</Button>
               </div>
             </CardContent>

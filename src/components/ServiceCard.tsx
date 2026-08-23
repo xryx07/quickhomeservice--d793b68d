@@ -76,7 +76,7 @@ const ServiceCard = ({ service }: ServiceCardProps) => {
         </div>
       </CardContent>
       <CardFooter className="p-4 pt-0 flex justify-between items-center border-t mt-auto dark:border-gray-700">
-        <div className="font-semibold">₹{price}</div>
+        <div className="font-semibold">₹{price.toLocaleString("en-IN")}</div>
         <Link to={`/services/${id}`}>
           <Button className="btn-brand">Book Now</Button>
         </Link>

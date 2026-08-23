@@ -51,7 +51,7 @@ const ServiceOverview = ({ service, onBookNow }: ServiceOverviewProps) => {
           <Card>
             <CardContent className="p-6">
               <div className="mb-6">
-                <p className="text-2xl font-bold mb-1">${service.price.toFixed(0)}</p>
+                <p className="text-2xl font-bold mb-1">₹{service.price.toLocaleString("en-IN")}</p>
                 <p className="text-muted-foreground">Base price for this service</p>
               </div>
               
