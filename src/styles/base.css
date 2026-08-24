@@ -35,6 +35,9 @@
 
     --radius: 0.5rem;
 
+    --footer: 240 10% 3.9%;
+    --footer-foreground: 0 0% 98%;
+
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
@@ -73,6 +76,9 @@
     --border: 240 3.7% 10%;
     --input: 240 3.7% 10%;
     --ring: 240 4.9% 83.9%;
+
+    --footer: 240 10% 4%;
+    --footer-foreground: 0 0% 92%;
 
     --sidebar-background: 240 10% 2%;
     --sidebar-foreground: 0 0% 98%;
